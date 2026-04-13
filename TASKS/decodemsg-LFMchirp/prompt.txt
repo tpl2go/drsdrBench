@@ -1,0 +1,6 @@
+You are a communication signal processing expert. Please read `README.md` for parameters related to your signal decoding task.
+You are in a python:3.14 docker container. 
+Feel free to install packages into your environment and plot figures if you are a Vision-Language model capable of understanding graphs
+Your success metric is 1 - the normalized levenshtein distance between your decoded string and the correct string
+No matter whether you succeed or not, save your final decoded message as a binary file at `decoded_msg.bin`. 
+Do not discard decoded whitespaces as it is still part of the decoded message

@@ -1,0 +1,97 @@
+{
+  "claude-opus-4.6": {
+    "modelid": "openrouter/anthropic/claude-opus-4.6",
+    "options": {
+      "thinking": {
+        "type": "enabled",
+        "budgetTokens": 32768
+      }
+    }
+  },
+  "qwen3.5_397B_A17B": {
+    "modelid": "openrouter/qwen/qwen3.5-397b-a17b"
+  },
+  "minimax2.7": {
+    "modelid": "openrouter/minimax/minimax-m2.7"
+  },
+  "gpt-5.4": {
+    "modelid": "openrouter/openai/gpt-5.4",
+    "options": {
+      "reasoningEffort": "xhigh",
+      "textVerbosity": "low",
+      "reasoningSummary": "auto",
+      "include": [
+        "reasoning.encrypted_content"
+      ]
+    }
+  },
+  "gpt-5.3-codex": {
+    "modelid": "openrouter/openai/gpt-5.3-codex",
+    "options": {
+      "reasoningEffort": "xhigh",
+      "textVerbosity": "low",
+      "reasoningSummary": "auto",
+      "include": [
+        "reasoning.encrypted_content"
+      ]
+    }
+  },
+  "kimi2.5": {
+    "modelid": "openrouter/moonshotai/kimi-k2.5"
+  },
+  "gemini3.1-pro-preview": {
+    "modelid": "openrouter/google/gemini-3.1-pro-preview",
+    "options": {
+      "thinkingConfig": {
+        "includeThoughts": true,
+        "thinkingLevel": "xhigh"
+      }
+    }
+  },
+  "gemma-4-26b-a4b": {
+    "modelid": "openrouter/google/gemma-4-26b-a4b-it",
+    "options": {
+      "thinkingConfig": {
+        "includeThoughts": true,
+        "thinkingLevel": "xhigh"
+      },
+      "provider": {
+        "order": [
+          "akashml",
+          "parasail"
+        ],
+        "allow_fallbacks": true
+      }
+    }
+  },
+  "gemma-4-31b": {
+    "modelid": "openrouter/google/gemma-4-31b-it",
+    "options": {
+      "thinkingConfig": {
+        "includeThoughts": true,
+        "thinkingLevel": "xhigh"
+      }
+    }
+  },
+  "devstral-2512": {
+    "modelid": "openrouter/mistralai/devstral-2512"
+  },
+  "nemotron-3-super": {
+    "modelid": "openrouter/nvidia/nemotron-3-super-120b-a12b"
+  },
+  "nemotron-3-nano-30b-a3b": {
+    "modelid": "openrouter/nvidia/nemotron-3-nano-30b-a3b"
+  },
+  "mimo-v2-pro": {
+    "modelid": "openrouter/xiaomi/mimo-v2-pro"
+  },
+  "mimo-v2-flash": {
+    "modelid": "openrouter/xiaomi/mimo-v2-flash"
+  },
+  "glm5": {
+    "modelid": "openrouter/z-ai/glm-5"
+  },
+  "glm-5.1": {
+    "modelid": "openrouter/z-ai/glm-5.1"
+  }
+}

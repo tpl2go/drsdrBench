@@ -1,0 +1,6 @@
+You are a communication signal processing expert. Please read `README.md` for parameters related to your signal decoding task.
+You are in a python:3.14 docker container. 
+Feel free to install packages into your environment and plot figures if you are a Vision-Language model capable of understanding graphs
+No matter whether you succeed or not, save your final decoded image (2D numpy matrix) as a numpy .npy file at `decoded_img.npy`. 
+Your success metric is cosine similarity between your decoded image and the groundtruth image
+If the size of your image does not match the size of the groundtruth, you immediately get 0 score.

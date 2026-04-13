@@ -1,0 +1,25 @@
+{
+  "TASK_FOLDERS": [
+    "decodeimg-AM",
+    "decodeimg-FFT",
+    "decodeimg-FM",
+    "decodeimg-ofdm",
+    "decodemsg-ofdm",
+    "decodemsg-ofdm2",
+    "decodemsg-QPSK",
+    "decodemsg-FSK",
+    "decodemsg-ofdm-audio",
+    "decodemsg-LFMchirp",
+    "decodemsg-ofdm-hard",
+    "decodemsg-lora",
+    "decodemsg-chirp",
+    "demod-AM",
+    "demod-AM-iq",
+    "demod-FM-quad"
+  ],
+  "MODELS_TO_RUN": null,
+  "LAUNCH_TASK_ARGS": [],
+  "DOCKER_IMAGE": "drsdrbench-opencode-runner:py3.14",
+  "BUILD_DOCKER_IMAGE": true,
+  "CONTINUE_ON_ERROR": true
+}

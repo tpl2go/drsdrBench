@@ -10,11 +10,72 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from model_routing_config import MODEL_ROUTING
-from config_taskstorun import MODELS_TO_RUN, TASK_FOLDERS
-
 PASSING_SCORE = 0.9
 TASKS_DIR_NAME = "TASKS"
+REPO_ROOT = Path(__file__).resolve().parent
+MODEL_ROUTING_CONFIG_PATH = REPO_ROOT / "model_routing_config.json"
+TASK_RUN_CONFIG_PATH = REPO_ROOT / "config_taskstorun.json"
+
+
+def load_json_object(config_path: Path) -> dict[str, Any]:
+    try:
+        payload = json.loads(config_path.read_text(encoding="utf-8"))
+    except OSError as exc:
+        raise RuntimeError(f"Failed to read JSON config at {config_path}: {exc}") from exc
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"Invalid JSON config at {config_path}: {exc}") from exc
+
+    if not isinstance(payload, dict):
+        raise RuntimeError(f"JSON config must be an object at top level: {config_path}")
+    return payload
+
+
+def load_model_routing(config_path: Path) -> dict[str, dict[str, Any]]:
+    payload = load_json_object(config_path)
+    normalized: dict[str, dict[str, Any]] = {}
+    for model_name, model_spec in payload.items():
+        if not isinstance(model_name, str) or not model_name.strip():
+            raise RuntimeError(
+                f"Model routing keys must be non-empty strings in {config_path}"
+            )
+        if not isinstance(model_spec, dict):
+            raise RuntimeError(
+                f"Model spec for '{model_name}' must be a JSON object in {config_path}"
+            )
+        normalized[model_name.strip()] = model_spec
+    return normalized
+
+
+def load_task_run_config(config_path: Path) -> tuple[list[str], list[str] | None]:
+    payload = load_json_object(config_path)
+
+    task_folders = payload.get("TASK_FOLDERS")
+    if not isinstance(task_folders, list):
+        raise RuntimeError("TASK_FOLDERS must be a list of non-empty strings")
+    parsed_tasks: list[str] = []
+    for value in task_folders:
+        if not isinstance(value, str) or not value.strip():
+            raise RuntimeError("TASK_FOLDERS must contain only non-empty strings")
+        parsed_tasks.append(value.strip())
+
+    models_to_run_value = payload.get("MODELS_TO_RUN")
+    if models_to_run_value is None:
+        models_to_run = None
+    else:
+        if not isinstance(models_to_run_value, list):
+            raise RuntimeError("MODELS_TO_RUN must be null or a list of non-empty strings")
+        parsed_models: list[str] = []
+        for value in models_to_run_value:
+            if not isinstance(value, str) or not value.strip():
+                raise RuntimeError("MODELS_TO_RUN must contain only non-empty strings")
+            parsed_models.append(value.strip())
+        models_to_run = parsed_models
+
+    return parsed_tasks, models_to_run
+
+
+MODEL_ROUTING = load_model_routing(MODEL_ROUTING_CONFIG_PATH)
+TASK_FOLDERS, MODELS_TO_RUN = load_task_run_config(TASK_RUN_CONFIG_PATH)
 
 
 @dataclass(frozen=True)

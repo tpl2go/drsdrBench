@@ -18,11 +18,10 @@ from functools import partial
 from pathlib import Path
 from typing import Any, Sequence
 
-from model_routing_config import MODEL_ROUTING
-
 REPO_ROOT = Path(__file__).resolve().parent
 TASKS_ROOT = REPO_ROOT / "TASKS"
 DEFAULT_CONFIG_PATH = REPO_ROOT / "config_taskstorun.json"
+MODEL_ROUTING_CONFIG_PATH = REPO_ROOT / "model_routing_config.json"
 STANDARD_SHARED_FILES = [
     "README.md",
     "prompt.txt",
@@ -75,6 +74,40 @@ class LaunchRuntimeOptions:
     opencode_host: str
     poll_interval_seconds: float
     server_startup_timeout_seconds: float
+
+
+def load_model_routing_config(config_path: Path) -> dict[str, dict[str, Any]]:
+    try:
+        payload = json.loads(config_path.read_text(encoding="utf-8"))
+    except OSError as exc:
+        raise RuntimeError(f"Failed to read model routing config at {config_path}: {exc}") from exc
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"Invalid model routing JSON at {config_path}: {exc}") from exc
+
+    if not isinstance(payload, dict):
+        raise RuntimeError(
+            f"Model routing config must be a JSON object at top level: {config_path}"
+        )
+
+    normalized: dict[str, dict[str, Any]] = {}
+    for model_name, model_spec in payload.items():
+        if not isinstance(model_name, str) or not model_name.strip():
+            raise RuntimeError(
+                f"Model routing keys must be non-empty strings in {config_path}"
+            )
+        if not isinstance(model_spec, dict):
+            raise RuntimeError(
+                f"Model spec for '{model_name}' must be a JSON object in {config_path}"
+            )
+        normalized[model_name.strip()] = model_spec
+
+    if not normalized:
+        raise RuntimeError(f"Model routing config is empty: {config_path}")
+
+    return normalized
+
+
+MODEL_ROUTING = load_model_routing_config(MODEL_ROUTING_CONFIG_PATH)
 
 
 def parse_positive_int(value: str) -> int:
